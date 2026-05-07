@@ -1,4 +1,4 @@
-# controller AE kit
+# controller AE kit [![Awesome](https://awesome.re/badge.svg)](https://awesome.re) ![Language](https://img.shields.io/badge/language-Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
 </br>
 
