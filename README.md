@@ -13,9 +13,16 @@
 
 ## Contributor
 - Ratthawat Unakanporn : Validate Sensor and Wiring
+  - Email: ratthawatu@gmail.com
+  
 - Chaiwat Phuchaiyanon  : Package Design
+  - Email: chaiwat.phuchaiyanon@gmail.com
+  
 - Wachirawit Kruawan  : Package Design
-- Vichayasan Sreshthaputra : Firmware design </br>
+  - Email: Nine7465@gmail.com
+    
+- Vichayasan Sreshthaputra : Firmware design
+  - Email: sreshthaputrav@gmail.com 
 
 Department of Mechanical Engineering, Faculty of Engineering, Chulalongkorn University</br>
 ## License & Ownership
