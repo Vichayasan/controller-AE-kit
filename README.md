@@ -11,7 +11,7 @@
 - Hardwear connects **MKS-MINI12864-V3** Pin to **MOTION 2350 PRO** GPIO
 <img width="1907" height="1068" alt="image" src="https://github.com/user-attachments/assets/ff4ed844-6c63-4e96-887a-36f9bc04ba7c" />
 
-## Contribute
+## Contributor
 - Ratthawat Unakanporn : Validate Sensor and Wiring
 - Chaiwat Phuchaiyanon  : Pakage Design
 - Wachirawit Kruawan  : Pakage Design
