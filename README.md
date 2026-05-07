@@ -1,7 +1,5 @@
 # controller AE kit </br> [![Awesome](https://awesome.re/badge.svg)](https://awesome.re) ![Language](https://img.shields.io/badge/language-Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
-</br>
-
 ## Project Timeline
 <img width="1131" height="259" alt="image" src="https://github.com/user-attachments/assets/bc4d2781-e277-4181-8b11-aa3d337b0cd1" />
 
