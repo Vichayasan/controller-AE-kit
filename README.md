@@ -22,3 +22,7 @@ Department of Mechanical Engineering, Faculty of Engineering, Chulalongkorn Univ
 This repository contains proprietary source code. All code in this repository is the intellectual property of Rayong Engineering & Plant Service Co.,Ltd. and Chulalongkorn University
 
 Unauthorized use, reproduction, or distribution of this code is strictly prohibited.
+
+## NOTE
+- MKS-MINI12864-V3: https://github.com/makerbase-mks/MKS-MINI12864-V3
+- MOTION 2350 PRO: https://github.com/CytronTechnologies/Cytron-MOTION-2350-PRO
