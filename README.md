@@ -5,8 +5,8 @@
 ## Project Timeline
 <img width="1131" height="259" alt="image" src="https://github.com/user-attachments/assets/bc4d2781-e277-4181-8b11-aa3d337b0cd1" />
 
-- ## timline summarize
-  The development of the Mechanical Seal Leak Detection system spans from late January to early May. The project we kicks off with sensor and microcontroller testing in late January. February and March serve as the core engineering phase, featuring parallel tracks for hardware design (progressing from CAD and wiring diagrams to multiple prototype iterations) and software development (covering requirements, signal coding, and interface design). Comprehensive system testing begins in late March alongside signal verification and continues throughout April. The timeline culminates in a dedicated period for final bug resolutions and project reporting in May.
+- ## timeline summarize
+     The development of the Mechanical Seal Leak Detection system spans from late January to early May. The project we kicks off with sensor and microcontroller testing in late January. February and March serve as the core engineering phase, featuring parallel tracks for hardware design (progressing from CAD and wiring diagrams to multiple prototype iterations) and software development (covering requirements, signal coding, and interface design). Comprehensive system testing begins in late March alongside signal verification and continues throughout April. The timeline culminates in a dedicated period for final bug resolutions and project reporting in May.
 
 
 ## Compatible Hardware
