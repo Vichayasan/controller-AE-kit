@@ -1,7 +1,15 @@
-## controller AE kit
+# controller AE kit
 
 ## Compatible Hardware
-<img width="1407" height="741" alt="image" src="https://github.com/user-attachments/assets/78092746-baf2-41ef-86ff-c895fc88f9f7" />
+
+
+- Hardwear connect wiring **AE sensor**
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/afa6f2c8-ad0a-44a8-a0a1-743d8c4bb5f8" />
+
+</br>
+
+- Hardwear connects **MKS-MINI12864-V3** Pin to **MOTION 2350 PRO** GPIO
+<img width="1907" height="1068" alt="image" src="https://github.com/user-attachments/assets/ff4ed844-6c63-4e96-887a-36f9bc04ba7c" />
 
 ## Contribute
 - Ratthawat Unakanporn : Validate Sensor and Wiring
