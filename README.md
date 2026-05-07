@@ -20,7 +20,7 @@ The development of the Mechanical Seal Leak Detection system spans from late Jan
 - Hardwear connects **MKS-MINI12864-V3** Pin to **MOTION 2350 PRO** GPIO
 <img width="1907" height="1068" alt="image" src="https://github.com/user-attachments/assets/ff4ed844-6c63-4e96-887a-36f9bc04ba7c" />
 
-## Contributor
+## Contributors
 - Ratthawat Unakanporn : Validate Sensor and Wiring
   - Email: ratthawatu@gmail.com
   
