@@ -13,8 +13,8 @@
 
 ## Contributor
 - Ratthawat Unakanporn : Validate Sensor and Wiring
-- Chaiwat Phuchaiyanon  : Pakage Design
-- Wachirawit Kruawan  : Pakage Design
+- Chaiwat Phuchaiyanon  : Package Design
+- Wachirawit Kruawan  : Package Design
 - Vichayasan Sreshthaputra : Firmware design </br>
 
 Department of Mechanical Engineering, Faculty of Engineering, Chulalongkorn University</br>
