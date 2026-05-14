@@ -578,3 +578,11 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 ## 15. NOTE
 - MKS-MINI12864-V3: https://github.com/makerbase-mks/MKS-MINI12864-V3
 - MOTION 2350 PRO: https://github.com/CytronTechnologies/Cytron-MOTION-2350-PRO
+
+## 16.Showcase
+- firmware
+
+[![Watch the demo video](https://img.youtube.com/vi/tTYDFm3Jr9M/maxresdefault.jpg)](https://www.youtube.com/watch?v=tTYDFm3Jr9M)
+
+
+
