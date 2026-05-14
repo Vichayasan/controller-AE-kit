@@ -586,4 +586,4 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 
 - Firmware
 
-<video src="(https://github.com/user-attachments/assets/b9758f13-1c47-428d-a448-221c20fe1263)" autoplay loop muted playsinline width="100%"></video>
+<video src="https://github.com/user-attachments/assets/b9758f13-1c47-428d-a448-221c20fe1263" autoplay loop muted playsinline width="100%"></video>
