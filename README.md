@@ -1,45 +1,553 @@
-# controller AE kit </br> 
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re) 
-![Language](https://img.shields.io/badge/language-Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![codacy](https://img.shields.io/badge/codacy-A-brightgreen)
+# Controller AE Kit
 
-## Project Timeline
-<img width="1131" height="259" alt="image" src="https://github.com/user-attachments/assets/bc4d2781-e277-4181-8b11-aa3d337b0cd1" />
+[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+[![Language](https://img.shields.io/badge/language-Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Codacy](https://img.shields.io/badge/codacy-A-brightgreen)](https://www.codacy.com/)
 
-## timeline summarize
-The development of the Mechanical Seal Leak Detection system spans from late January to early May. The project we kicks off with sensor and microcontroller testing in late January. February and March serve as the core engineering phase, featuring parallel tracks for hardware design (progressing from CAD and wiring diagrams to multiple prototype iterations) and software development (covering requirements, signal coding, and interface design). Comprehensive system testing begins in late March alongside signal verification and continues throughout April. The timeline culminates in a dedicated period for final bug resolutions and project reporting in May.
+---
 
+## Table of Contents
 
-## Compatible Hardware
+1. [Project Introduction](#1-project-introduction)
+2. [Project Objective](#2-project-objective)
+3. [Background Theory: Acoustic Emission (AE) Sensing](#3-background-theory-acoustic-emission-ae-sensing)
+4. [System Architecture](#4-system-architecture)
+5. [Hardware List](#5-hardware-list)
+6. [Complete Wiring Diagram](#6-complete-wiring-diagram)
+7. [Software Modules Explanation](#7-software-modules-explanation)
+8. [Data Logging Output (CSV Format)](#8-data-logging-output-csv-format)
+9. [Installation & Getting Started](#9-installation--getting-started)
+10. [Project Timeline](#10-project-timeline)
+11. [Timeline Summarize](#11-timeline-summarize)
+12. [Contributors](#12-contributors)
+13. [License & Ownership](#13-license--ownership)
+14. [Note](#14-note)
 
+---
 
-- Hardwear connect wiring **AE sensor**
+## 1. Project Introduction
+
+Mechanical seals are critical components widely used in rotating equipment such as pumps, compressors, and agitators within industrial facilities, particularly in the petrochemical and refinery sectors. Their primary function is to prevent the leakage of process fluids between the rotating shaft and the stationary housing, thereby ensuring safe and efficient plant operation.
+
+Despite their essential role, mechanical seals are susceptible to progressive degradation caused by factors such as surface wear, thermal stress, chemical corrosion, and improper installation. When a seal begins to fail, microscopic cracks or surface discontinuities develop at the seal face, generating high-frequency elastic stress waves that propagate through the surrounding medium — a physical phenomenon known as Acoustic Emission (AE). If left undetected, even minor leakage can escalate into catastrophic failure, posing significant risks to personnel safety, environmental integrity, and equipment reliability.
+
+This project presents the development of a real-time, embedded controller designed to acquire, process, and display Acoustic Emission signals originating from mechanical seal assemblies. The system is built upon the Cytron MOTION 2350 PRO microcontroller platform and is programmed entirely in MicroPython. It integrates a preamplified AE sensor, a graphical LCD display, a real-time clock (RTC) module, an encoder-based user interface, a buzzer alert system, and an RGB LED status indicator, forming a compact and self-contained condition monitoring kit suitable for field deployment.
+
+---
+
+## 2. Project Objective
+
+The objectives of this project are as follows:
+
+1. To develop a firmware-based embedded controller capable of acquiring Acoustic Emission signals from a mechanical seal assembly in real time.
+2. To implement a signal processing pipeline in MicroPython that filters and evaluates AE signal amplitude against predefined threshold levels.
+3. To design a user-friendly graphical interface on the MKS-MINI12864-V3 LCD display, allowing operators to monitor seal condition and configure detection parameters on-site.
+4. To integrate a real-time clock (RTC) module for timestamping detection events, enabling traceability and post-incident analysis.
+5. To provide audible and visual alert outputs — via a piezoelectric buzzer and NeoPixel RGB LED — to notify operators of abnormal AE activity indicative of seal leakage.
+6. To validate the complete system through bench-level testing, verifying signal acquisition accuracy, threshold responsiveness, and display functionality.
+
+---
+
+## 3. Background Theory: Acoustic Emission (AE) Sensing
+
+### 3.1 What is Acoustic Emission?
+
+Acoustic Emission (AE) is a phenomenon in which transient elastic waves are generated by the rapid release of localized energy within a material. This energy release typically originates from micro-scale events such as crack initiation and propagation, plastic deformation, friction between sliding surfaces, impact, or fluid leakage through narrow gaps.
+
+In the context of mechanical seal monitoring, AE signals are primarily produced by two mechanisms:
+
+- **Solid-borne friction:** When the lapped faces of a degraded seal make irregular contact, micro-asperities on opposing surfaces collide and generate stress waves at frequencies typically ranging from **100 kHz to 1 MHz**.
+- **Fluid-borne leakage:** When pressurized process fluid escapes through a compromised seal gap, turbulent flow and cavitation at the orifice generate broadband AE activity detectable at the seal housing.
+
+Unlike vibration monitoring (which operates in the 10 Hz – 10 kHz range), AE sensing detects events at ultrasonic frequencies that are entirely inaudible to humans and undetectable by conventional accelerometers, making it uniquely sensitive to early-stage seal deterioration.
+
+### 3.2 AE Signal Characteristics
+
+A typical AE signal observed from a leaking mechanical seal exhibits the following characteristics:
+
+| Parameter | Description |
+|---|---|
+| **Frequency Range** | 100 kHz – 1 MHz (ultrasonic) |
+| **Signal Type** | Continuous or burst emission |
+| **Key Feature** | Voltage amplitude correlates with leak severity |
+| **Propagation** | Travels through solid structures as longitudinal or shear waves |
+
+The most commonly used signal feature for leak detection is the voltage amplitude read from the preamplifier output, which represents the energy content of the AE signal at each sampling instant. An increase in amplitude beyond a calibrated threshold is a reliable indicator of abnormal friction or leakage activity at the seal face.
+
+### 3.3 Preamplifier Role
+
+Raw AE signals from piezoelectric sensors are extremely weak (typically in the microvolt range) and broadband. A dedicated **preamplifier** is therefore placed as close to the sensor as possible to:
+
+1. Amplify the signal to a measurable voltage range (typically by 40–60 dB).
+2. Apply bandpass filtering to reject low-frequency mechanical noise and retain only the AE frequency band of interest.
+3. Improve the signal-to-noise ratio (SNR) before the signal is transmitted to the microcontroller's ADC input.
+
+In this system, the preamplifier output is connected directly to an analog input pin of the MOTION 2350 PRO, where it is sampled and processed by the firmware.
+
+---
+
+## 4. System Architecture
+
+The overall system consists of four functional layers: **sensing**, **processing**, **output/display**, and **user interaction**. The data flow is described as follows:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        SENSING LAYER                           │
+│   AE Piezoelectric Sensor → Preamplifier (preamp_mod.py)       │
+│   Analog signal → ADC on MOTION 2350 PRO (GP26, GP27)          │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────────┐
+│                      PROCESSING LAYER                          │
+│   config.py     → System-wide pin assignments and constants    │
+│   preamp_mod.py → ADC sampling, circular buffer, waveform draw │
+│   rtc_mod.py    → Timestamp acquisition via DS3231 RTC         │
+└────────┬───────────────────┬────────────────────────────────────┘
+         │                   │
+┌────────▼──────────┐  ┌─────▼──────────────────────────────────┐
+│   OUTPUT LAYER    │  │           USER INTERFACE LAYER         │
+│ beeper_mod.py     │  │  encoder_mod.py  → Rotary input        │
+│ neopixel_mod.py   │  │  lcd_mod.py      → Graphical display   │
+│ (buzzer + LED     │  │  ST7567driver.py → LCD low-level driver│
+│  heartbeat)       │  │  (MKS-MINI12864-V3)                    │
+└───────────────────┘  └────────────────────────────────────────┘
+                                        │
+                             ┌──────────▼──────────┐
+                             │    SD CARD LOGGING  │
+                             │  CSV file via SPI   │
+                             │  (PIN_SD_CS = GP17) │
+                             └─────────────────────┘
+```
+
+All modules are coordinated through `config.py`, which stores shared parameters such as ADC pin assignments, SPI/I2C settings, and timing constants, ensuring a clean and maintainable firmware architecture.
+
+---
+
+## 5. Hardware List
+
+The following hardware components are used in this project:
+
+| # | Component | Model | Role |
+|---|---|---|---|
+| 1 | Microcontroller | Cytron MOTION 2350 PRO | Main processing unit (RP2350 dual-core) |
+| 2 | AE Sensor | Piezoelectric AE Sensor | Detects ultrasonic elastic waves from seal |
+| 3 | Preamplifier | AE Preamplifier Module | Amplifies and filters raw AE signal |
+| 4 | Graphical LCD | MKS-MINI12864-V3 (ST7567 driver) | Displays real-time waveform and UI |
+| 5 | Real-Time Clock | DS3231 RTC Module | Provides accurate timestamp for CSV logging |
+| 6 | Rotary Encoder | Incremental Encoder with button | User interface navigation |
+| 7 | Buzzer | Piezoelectric Buzzer | Non-blocking audible feedback |
+| 8 | RGB LED | NeoPixel WS2812B (×3) | Heartbeat and status indicator |
+| 9 | SD Card Module | SPI SD Card | Stores CSV data log files |
+| 10 | Power Supply | 5V DC / USB | Powers the controller board |
+
+### Microcontroller: Cytron MOTION 2350 PRO
+
+The Cytron MOTION 2350 PRO is a feature-rich robotics and automation controller based on the Raspberry Pi **RP2350** chip (dual-core Arm Cortex-M33, up to 150 MHz). It provides multiple GPIO pins, hardware I2C/SPI/UART interfaces, 12-bit ADC inputs, and native MicroPython support, making it well-suited for real-time embedded sensor applications.
+
+> Reference: [Cytron MOTION 2350 PRO GitHub](https://github.com/CytronTechnologies/Cytron-MOTION-2350-PRO)
+
+### Display: MKS-MINI12864-V3
+
+The MKS-MINI12864-V3 is a compact 128×64 pixel graphical LCD module driven by the ST7567 controller chip, communicating via SPI. It provides a clear monochrome display sufficient for rendering real-time AE signal waveforms, voltage readouts, and menu navigation.
+
+> Reference: [MKS-MINI12864-V3 GitHub](https://github.com/makerbase-mks/MKS-MINI12864-V3)
+
+### RTC: DS3231
+
+The DS3231 is a highly accurate I2C real-time clock module with a built-in temperature-compensated crystal oscillator (TCXO), ensuring timekeeping accuracy of ±2 ppm across a wide temperature range. It is used in this project to timestamp each CSV log entry, supporting post-analysis and maintenance record-keeping.
+
+---
+
+## 6. Complete Wiring Diagram
+
+### AE Sensor Wiring
+
+The AE sensor is connected to the preamplifier input, and the preamplifier analog output is routed to the ADC-capable GPIO pins on the MOTION 2350 PRO. The system supports **two independent AE sensors** simultaneously:
+
+- **AE Sensor 01** → GP26 (`PIN_AE_SENSOR01_ADC`)
+- **AE Sensor 02** → GP27 (`PIN_AE_SENSOR02_ADC`)
+
+- Hardware connection wiring — **AE sensor**
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/afa6f2c8-ad0a-44a8-a0a1-743d8c4bb5f8" />
 
-</br>
+### MKS-MINI12864-V3 to MOTION 2350 PRO GPIO Pinout
 
-- Hardwear connects **MKS-MINI12864-V3** Pin to **MOTION 2350 PRO** GPIO
+The LCD and SD card share the same SPI bus. The following pin mapping is used:
+
+| Signal | MOTION 2350 PRO GPIO | Description |
+|---|---|---|
+| SPI SCK | GP18 | SPI Clock (LCD + SD card shared) |
+| SPI MOSI | GP19 | SPI Data out |
+| SPI MISO | GP16 | SPI Data in (SD card read) |
+| LCD CS | GP2 | LCD Chip Select |
+| LCD DC | GP3 | LCD Data/Command Select |
+| LCD RST | GP1 | LCD Reset |
+| SD CS | GP17 | SD Card Chip Select |
+| RTC SDA | GP28 | RTC I2C Data |
+| RTC SCL | GP29 | RTC I2C Clock |
+| NeoPixel | GP4 | RGB LED Data |
+| Buzzer | GP0 | PWM Buzzer |
+| Encoder A | GP5 | Encoder Channel A |
+| Encoder B | GP6 | Encoder Channel B |
+| Encoder BTN | GP7 | Encoder Push-Button |
+
+> **Note:** All pin assignments above are defined in `config.py`. Verify against your specific board revision before assembly.
+
+- Hardware connection — **MKS-MINI12864-V3** Pin to **MOTION 2350 PRO** GPIO
 <img width="1907" height="1068" alt="image" src="https://github.com/user-attachments/assets/ff4ed844-6c63-4e96-887a-36f9bc04ba7c" />
 
-## Contributors
+---
+
+## 7. Software Modules Explanation
+
+This repository contains the following MicroPython source files. Each module has a single, well-defined responsibility following a modular firmware design pattern.
+
+---
+
+### `config.py` — System-Wide Pin and Hardware Constants
+
+**Purpose:** Acts as the single source of truth for all hardware pin assignments and communication parameters. Every other module imports `config` directly, ensuring that changing a physical wire connection requires editing only this one file.
+
+**Complete pin definitions:**
+
+```python
+# config.py - PIN and hardware constants
+
+PIN_NEOPIXEL = 4          # NeoPixel RGB LED data pin
+PIN_BEEPER   = 0          # Piezoelectric buzzer PWM pin
+
+PIN_ENC_A    = 5          # Rotary encoder channel A
+PIN_ENC_B    = 6          # Rotary encoder channel B
+PIN_ENC_BTN  = 7          # Rotary encoder push-button
+
+PIN_LCD_CS   = 2          # LCD SPI chip select
+PIN_LCD_DC   = 3          # LCD data/command select
+PIN_LCD_RST  = 1          # LCD reset
+
+PIN_SPI_SCK  = 18         # SPI clock (shared: LCD + SD card)
+PIN_SPI_MOSI = 19         # SPI MOSI
+PIN_SPI_MISO = 16         # SPI MISO
+PIN_SD_CS    = 17         # SD card chip select
+
+PIN_AE_SENSOR01_ADC = 26  # AE Sensor 1 analog input
+PIN_AE_SENSOR02_ADC = 27  # AE Sensor 2 analog input
+
+PIN_RTC_SDA  = 28         # RTC I2C data
+PIN_RTC_SCL  = 29         # RTC I2C clock
+
+LCD_BAUD = 2_000_000      # SPI baud rate for LCD (2 MHz)
+SD_BAUD  =    50_000      # SPI baud rate for SD card (50 kHz)
+
+VREF = 3.3                # ADC reference voltage (Volts)
+```
+
+> **Key design note:** The system supports **two independent AE sensors simultaneously** (`AE01` on GP26, `AE02` on GP27). A third sensor channel is already commented out in the code and can be enabled by adding a single line.
+
+---
+
+### `preamp_mod.py` — Multi-Sensor AE Signal Acquisition and Waveform Display
+
+**Purpose:** Defines the `AESensor` class, which manages ADC sampling, circular buffer storage, and real-time waveform rendering on the LCD for each AE sensor independently. Two sensor instances (`AE01` and `AE02`) are created at module level and shared across the application.
+
+**Key class: `AESensor`**
+
+Each `AESensor` instance maintains its own completely isolated state, including its own sample buffer, timing counters, and display timing — ensuring that two sensors can operate simultaneously without any shared state conflicts.
+
+| Parameter | Default | Description |
+|---|---|---|
+| `buffer_size` | 128 | Number of samples in circular buffer (matches LCD width) |
+| `sample_ms` | 20 ms | Sampling interval (50 Hz effective sample rate) |
+| `draw_ms` | 80 ms | Minimum time between LCD redraws (~12.5 fps) |
+
+**How it works:**
+
+1. `read_and_add()` — reads the ADC (`read_u16()`, 16-bit unsigned, range 0–65535) and stores the raw value into a circular buffer, advancing the write index on each call.
+2. `get_ordered_buffer()` — reconstructs the buffer in chronological order by concatenating the two halves of the circular array around the current write index.
+3. `draw_screen()` — converts each buffer value to a unit float `[0.0, 1.0]`, maps it to a pixel Y-coordinate within a 40-pixel tall plot area, and draws a connected line trace across all 128 columns of the LCD. The current voltage and logging status (`LOG: Y/N`) are shown as a text overlay.
+4. `raw_to_v(raw)` — converts a raw 16-bit ADC reading to voltage:
+
+   **V = raw × VREF / 65535 = raw × 3.3 / 65535**
+
+**Sensor instances created at module level:**
+
+```python
+sensors = {
+    'AE01': AESensor(config.PIN_AE_SENSOR01_ADC, name="AE SENSOR 01"),
+    'AE02': AESensor(config.PIN_AE_SENSOR02_ADC, name="AE SENSOR 02"),
+}
+```
+
+The helper function `get_sensor(name)` allows the main application to retrieve a sensor object by name string (e.g., `get_sensor('AE01')`).
+
+---
+
+### `encoder_mod.py` — Rotary Encoder with Quadrature Decoding and Long Press
+
+**Purpose:** Reads the rotary encoder's two quadrature channels (A and B) and its push-button, decoding physical rotation into signed click counts and classifying button presses as either short press or long press. All state is maintained as module-level globals and updated by calling `update()` from the main loop.
+
+**Quadrature decoding — state machine:**
+
+The encoder state is represented as a 2-bit value `(A << 1) | B`. Valid transitions between states are encoded in a lookup table `TRANS`, which maps each `(old_state, new_state)` pair to a direction value of `+1` or `-1`. Invalid transitions (caused by noise or contact bounce) produce `0` and are silently ignored.
+
+```python
+TRANS = {
+    (0,1):+1, (1,3):+1, (3,2):+1, (2,0):+1,   # clockwise
+    (0,2):-1, (2,3):-1, (3,1):-1, (1,0):-1,   # counter-clockwise
+}
+STEPS_PER_CLICK = 4   # 4 state transitions = 1 detent click
+```
+
+**Timing constants:**
+
+| Constant | Value | Description |
+|---|---|---|
+| `DEBOUNCE_MS` | 30 ms | Button debounce window |
+| `LONG_MS` | 700 ms | Hold duration to trigger long press |
+| `ENC_IGNORE_MS` | 150 ms | Encoder ignored immediately after button press |
+
+**Public interface (call from main loop):**
+
+```python
+encoder_mod.update()                    # must be called every loop iteration
+delta   = encoder_mod.pop_delta()       # net clicks since last call (+/-)
+pressed = encoder_mod.pop_pressed()     # True if short press occurred
+long    = encoder_mod.pop_long()        # True if long press occurred
+```
+
+Each `pop_*` function reads and atomically clears its flag, preventing double-reads.
+
+---
+
+### `beeper_mod.py` — Non-Blocking PWM Buzzer
+
+**Purpose:** Drives the piezoelectric buzzer via hardware PWM in a completely non-blocking manner. The buzzer is activated for a fixed duration and then silenced automatically by polling `beep_update()` in the main loop — no `sleep()` or blocking delay is used at any point.
+
+**How it works:**
+
+```python
+beep_start(freq=900, ms=60)   # begin a 60 ms beep at 900 Hz
+beep_update()                 # call every loop — silences buzzer when timer expires
+```
+
+`beep_start()` sets the PWM frequency and duty cycle, then records a deadline timestamp using `time.ticks_add()`. On each call to `beep_update()`, the current time is compared against the deadline; when reached, the duty cycle is set to zero (silence).
+
+**Key constants:**
+
+| Constant | Value | Description |
+|---|---|---|
+| `BEEP_DUTY` | 45000 | Standard beep duty cycle (~69% of 65535) |
+| `PRESS_DUTY` | 65535 | Full duty cycle for key-press confirmation tone |
+
+---
+
+### `neopixel_mod.py` — NeoPixel RGB LED Indicator
+
+**Purpose:** Controls a strip of 3 WS2812B NeoPixel LEDs connected to `config.PIN_NEOPIXEL` (GP4). On startup the LEDs are initialised to green. The module provides a `toggle()` function to blink the green LED on and off, used by the main application as a **heartbeat indicator** to confirm the firmware loop is running correctly.
+
+**Key details:**
+
+- The WS2812B protocol transmits colour in **GRB order** (not RGB), handled internally: `np[i] = (g, r, b)`.
+- **3 LEDs** (`NPIX = 3`) are all driven to the same colour simultaneously.
+- The `import neopixel` is wrapped in `try/except ImportError`, so the module degrades gracefully to a no-op if the driver is unavailable.
+
+```python
+leds_rgb(r, g, b)   # set all 3 LEDs to an RGB colour (0–255 each)
+toggle()            # toggle green LED on/off (heartbeat blink)
+```
+
+**Default startup state:** `LED_G = 80` → all LEDs glow green at brightness 80/255.
+
+---
+
+### `rtc_mod.py` — Real-Time Clock Interface (DS3231)
+
+**Purpose:** Provides a robust, fault-tolerant interface for reading the current date and time from the DS3231 RTC module over I2C (GP28/GP29). It performs I2C bus scanning, verifies the DS3231 is present at address `0x68`, and exposes two formatted string functions used throughout the application.
+
+**Key functions:**
+
+```python
+rtc_init()       # initialize I2C bus and verify DS3231; returns True/False
+time_string()    # returns "YYYY-MM-DD HH:MM:SS"  ← used in CSV logging
+time_hms()       # returns "HH:MM:SS"             ← used in LCD display
+```
+
+The module handles all exceptions internally and sets `rtc_ok = False` if initialization fails, allowing the application to continue operating without a connected RTC (timestamps will display `RTC_READ_FAIL`).
+
+**Dependency:** Relies on `DS3231.py` for low-level I2C register communication.
+
+---
+
+### `DS3231.py` — DS3231 Low-Level I2C Driver
+
+**Purpose:** Implements the low-level I2C register read/write operations for the DS3231 chip, including Binary-Coded Decimal (BCD) conversion between the chip's internal register format and human-readable time values. This file is a hardware driver and is accessed only through `rtc_mod.py`.
+
+---
+
+### `lcd_mod.py` and `ST7567driver.py` — LCD Display Stack
+
+**`ST7567driver.py`** implements the SPI communication protocol for the ST7567 LCD controller, handling the initialization sequence, page/column addressing, and raw framebuffer writes at 2 MHz (`config.LCD_BAUD`).
+
+**`lcd_mod.py`** builds on top of the driver and exposes higher-level drawing primitives (`text`, `fill_rect`, `pixel`, `lcd_update`) used by `preamp_mod.py` to render the waveform trace and status text overlay. The LCD communicates via the shared SPI bus (GP18/GP19) with chip-select on GP2.
+
+---
+
+## 8. Data Logging Output (CSV Format)
+
+When logging is enabled by the operator via the rotary encoder menu — indicated by `LOG: Y` on the LCD display — the system continuously writes AE measurement data from both sensors to the SD card in CSV format. The SD card is accessed via the shared SPI bus at `config.SD_BAUD` (50 kHz), with chip-select on `PIN_SD_CS` (GP17).
+
+The logged CSV file can be retrieved by removing the SD card and opening it on any computer using spreadsheet software such as Microsoft Excel or Google Sheets.
+
+### CSV Column Structure
+
+Each row in the CSV file contains **six columns** representing both AE sensor channels recorded at the same sampling instant.
+
+Output data=
+<img width="1568" height="390" alt="image" src="https://github.com/user-attachments/assets/4c319cdd-ef82-4d8b-9a6e-22c06da8dc32" />
+
+
+| Column | Content | Unit | Example |
+|---|---|---|---|
+| 1 | Timestamp — AE Sensor 01 | `D/M/YY HH:MM` from DS3231 | `8/5/26 16:12` |
+| 2 | Raw ADC value — AE Sensor 01 (GP26) | Integer, 0–65535 | `528` |
+| 3 | Converted voltage — AE Sensor 01 | Volts (V) | `0.0266` |
+| 4 | Timestamp — AE Sensor 02 | `D/M/YY HH:MM` from DS3231 | `8/5/26 16:12` |
+| 5 | Raw ADC value — AE Sensor 02 (GP27) | Integer, 0–65535 | `608` |
+| 6 | Converted voltage — AE Sensor 02 | Volts (V) | `0.0306` |
+
+### Voltage Conversion Formula
+
+The voltage value in columns 3 and 6 is derived directly from `preamp_mod.raw_to_v()`:
+
+```
+V = raw_adc × VREF / 65535
+V = raw_adc × 3.3  / 65535
+```
+
+**Verification examples from the logged data:**
+
+```
+Raw =  528  →  528  × 3.3 / 65535 = 0.0266 V  ✓
+Raw =  608  →  608  × 3.3 / 65535 = 0.0306 V  ✓
+Raw =  672  →  672  × 3.3 / 65535 = 0.0338 V  ✓
+```
+
+### Interpreting the Logged Data
+
+- **Normal baseline:** Under no-leak conditions, voltage values from the preamplifier output typically remain in the range of **0.020 – 0.035 V**, reflecting only ambient electrical noise and mechanical background activity.
+
+- **Elevated reading:** A sustained rise in voltage above the established baseline indicates increasing AE activity at the seal face. This may be caused by progressive seal face wear, lubrication breakdown, or early-stage leakage and warrants closer inspection.
+
+- **Transient spike (outlier):** A single sample significantly higher than surrounding values — such as a reading of **0.8306 V** occurring among a sequence of ~0.030 V readings — may indicate a discrete AE burst event caused by a sudden crack propagation, impact, or fluid jet. Such spikes should be noted and reviewed in the context of adjacent samples rather than treated as sustained leakage.
+
+### Notes on Timestamp Resolution
+
+The DS3231 RTC provides timestamps at **one-second resolution**. Since the ADC sampling interval is 20 ms (50 Hz), multiple rows within the same CSV file will share identical timestamp values (e.g., `8/5/26 16:12`). This is expected behaviour and does not indicate duplicate entries. For sub-second time resolution, the sample index within each second can be inferred from the row order.
+
+---
+
+## 9. Installation & Getting Started
+
+### Prerequisites
+
+Ensure the following are available before proceeding:
+
+- **Hardware:** Assembled controller kit with all components connected as per the wiring diagram in Section 6.
+- **Software:** [Thonny IDE](https://thonny.org/) (recommended) or any MicroPython-compatible editor.
+- **Firmware:** MicroPython firmware flashed onto the MOTION 2350 PRO board.
+
+### Step 1 — Flash MicroPython onto MOTION 2350 PRO
+
+1. Download the latest MicroPython `.uf2` firmware for RP2350 from the [official MicroPython website](https://micropython.org/download/).
+2. Hold the **BOOT** button on the MOTION 2350 PRO, then connect it to your PC via USB.
+3. The board will appear as a USB mass storage device (e.g., `RPI-RP2`).
+4. Drag and drop the `.uf2` firmware file onto the drive.
+5. The board will reboot automatically with MicroPython installed.
+
+### Step 2 — Clone this Repository
+
+```bash
+git clone https://github.com/Vichayasan/controller-AE-kit.git
+```
+
+### Step 3 — Upload Files to the Board
+
+Using Thonny IDE or `mpremote`:
+
+1. Open Thonny IDE and connect to the MOTION 2350 PRO via the correct COM port.
+2. Upload **all `.py` files** from this repository to the root directory of the board's filesystem.
+
+   The required files are:
+   ```
+   config.py
+   DS3231.py
+   ST7567driver.py
+   preamp_mod.py
+   rtc_mod.py
+   lcd_mod.py
+   encoder_mod.py
+   beeper_mod.py
+   neopixel_mod.py
+   main.py
+   ```
+
+### Step 4 — Configure Parameters
+
+Open `config.py` and verify the following settings match your hardware setup:
+
+```python
+PIN_AE_SENSOR01_ADC = 26   # GPIO pin for AE Sensor 01
+PIN_AE_SENSOR02_ADC = 27   # GPIO pin for AE Sensor 02
+PIN_RTC_SDA         = 28   # RTC I2C SDA
+PIN_RTC_SCL         = 29   # RTC I2C SCL
+VREF                = 3.3  # ADC reference voltage (Volts)
+```
+
+> **Important:** Before deployment, record the baseline voltage of each sensor under known no-leak conditions. Use this baseline to calibrate the detection threshold in the main application. A threshold set approximately 20–30% above the measured baseline is recommended as a starting point.
+
+### Step 5 — Run the System
+
+1. Reset the board or press the **RUN** button in Thonny.
+2. The LCD will display the initialization screen, followed by the real-time AE waveform display.
+3. Rotate the encoder to switch between AE Sensor 01 and AE Sensor 02 views.
+4. Press the encoder button to toggle data logging (`LOG: Y/N`).
+5. The NeoPixel LEDs will blink green as a heartbeat indicator during normal operation.
+6. When logging is active (`LOG: Y`), sensor data is written continuously to the SD card in CSV format as described in Section 8.
+
+---
+
+## 10. Project Timeline
+<img width="1131" height="259" alt="image" src="https://github.com/user-attachments/assets/bc4d2781-e277-4181-8b11-aa3d337b0cd1" />
+
+---
+
+## 11. timeline summarize
+The development of the Mechanical Seal Leak Detection system spans from late January to early May. The project we kicks off with sensor and microcontroller testing in late January. February and March serve as the core engineering phase, featuring parallel tracks for hardware design (progressing from CAD and wiring diagrams to multiple prototype iterations) and software development (covering requirements, signal coding, and interface design). Comprehensive system testing begins in late March alongside signal verification and continues throughout April. The timeline culminates in a dedicated period for final bug resolutions and project reporting in May.
+
+---
+
+## 12.Contributors
 - Ratthawat Unakanporn : Validate Sensor and Wiring
   - Email: ratthawatu@gmail.com
   
-- Chaiwat Phuchaiyanon  : Package Design
+- Chaiwat Phuchaiyanon  : Package Design/Report writing
   - Email: chaiwat.phuchaiyanon@gmail.com
   
 - Wachirawit Kruawan  : Package Design
   - Email: Nine7465@gmail.com
     
-- Vichayasan Sreshthaputra : Firmware design
+- Vichayasan Sreshthaputra : Firmware design/Report writing
   - Email: sreshthaputrav@gmail.com 
 
+---
+
 Department of Mechanical Engineering, Faculty of Engineering, Chulalongkorn University</br>
-## License & Ownership
+## 13. License & Ownership
 This repository contains proprietary source code. All code in this repository is the intellectual property of Rayong Engineering & Plant Service Co.,Ltd. and Chulalongkorn University
 
 Unauthorized use, reproduction, or distribution of this code is strictly prohibited.
 
-## NOTE
+---
+
+## 14. NOTE
 - MKS-MINI12864-V3: https://github.com/makerbase-mks/MKS-MINI12864-V3
 - MOTION 2350 PRO: https://github.com/CytronTechnologies/Cytron-MOTION-2350-PRO
