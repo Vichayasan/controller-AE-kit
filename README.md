@@ -582,7 +582,6 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 ## 16.Showcase
 - firmware
 
-[![Watch the demo video](https://img.youtube.com/vi/tTYDFm3Jr9M/maxresdefault.jpg)](https://www.youtube.com/watch?v=tTYDFm3Jr9M)
-
-
-
+<a href="https://www.youtube.com/watch?v=tTYDFm3Jr9M">
+  <img src="https://img.youtube.com/vi/tTYDFm3Jr9M/maxresdefault.jpg" width="600" alt="Watch the demo video">
+</a>
