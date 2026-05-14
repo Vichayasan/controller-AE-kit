@@ -582,4 +582,6 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 ## 16.Video Showcase
 - firmware
 
-<video src=[https://youtube.com/shorts/9UGh8VxuhvI?feature=share](https://github.com/user-attachments/assets/0c8ebab6-43b8-4860-899b-3834f37bed8a) autoplay loop muted playsinline width="100%"></video>
+<video src="[https://youtube.com/shorts/9UGh8VxuhvI?feature=share](https://github.com/user-attachments/assets/0c8ebab6-43b8-4860-899b-3834f37bed8a)" autoplay loop muted playsinline width="100%"></video>
+
+
