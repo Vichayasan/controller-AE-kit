@@ -581,6 +581,7 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 
 ## 16.Video Showcase
 - firmware
+<video src=https://youtube.com/shorts/9UGh8VxuhvI?feature=share autoplay loop muted playsinline width="100%"></video>
 
 <a href="https://www.youtube.com/watch?v=tTYDFm3Jr9M">
   <img src="https://img.youtube.com/vi/tTYDFm3Jr9M/maxresdefault.jpg" width="600" alt="Watch the demo video">
