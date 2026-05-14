@@ -580,7 +580,7 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 - MOTION 2350 PRO: https://github.com/CytronTechnologies/Cytron-MOTION-2350-PRO
 
 ## 16.Video Showcase
-- firmware
+- Casing
 
 <video src="https://github.com/user-attachments/assets/0c8ebab6-43b8-4860-899b-3834f37bed8a" autoplay loop muted playsinline width="100%"></video>
 
