@@ -93,16 +93,16 @@ The overall system consists of four functional layers: **sensing**, **processing
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        SENSING LAYER                           │
-│   AE Piezoelectric Sensor → Preamplifier (preamp_mod.py)       │
-│   Analog signal → ADC on MOTION 2350 PRO (GP26, GP27)          │
+│                        SENSING LAYER                            │
+│   AE Piezoelectric Sensor → Preamplifier (preamp_mod.py)        │
+│   Analog signal → ADC on MOTION 2350 PRO (GP26, GP27)           │
 └────────────────────────────┬────────────────────────────────────┘
                              │
 ┌────────────────────────────▼────────────────────────────────────┐
-│                      PROCESSING LAYER                          │
-│   config.py     → System-wide pin assignments and constants    │
-│   preamp_mod.py → ADC sampling, circular buffer, waveform draw │
-│   rtc_mod.py    → Timestamp acquisition via DS3231 RTC         │
+│                      PROCESSING LAYER                           │
+│   config.py     → System-wide pin assignments and constants     │
+│   preamp_mod.py → ADC sampling, circular buffer, waveform draw  │
+│   rtc_mod.py    → Timestamp acquisition via DS3231 RTC          │
 └────────┬───────────────────┬────────────────────────────────────┘
          │                   │
 ┌────────▼──────────┐  ┌─────▼──────────────────────────────────┐
