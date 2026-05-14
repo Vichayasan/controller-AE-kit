@@ -586,4 +586,4 @@ Unauthorized use, reproduction, or distribution of this code is strictly prohibi
 
 - Firmware
 
-<video src="Fullcontent.mp4" autoplay loop muted playsinline width="100%"></video>
+<video src="https://github.com/Vichayasan/controller-AE-kit/blob/e32670ac28cb5e44f51eb9556cb2e9048b341c7e/Fullcontent.mp4" autoplay loop muted playsinline width="100%"></video>
