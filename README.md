@@ -13,15 +13,16 @@
 3. [Background Theory: Acoustic Emission (AE) Sensing](#3-background-theory-acoustic-emission-ae-sensing)
 4. [System Architecture](#4-system-architecture)
 5. [Hardware List](#5-hardware-list)
-6. [Complete Wiring Diagram](#6-complete-wiring-diagram)
-7. [Software Modules Explanation](#7-software-modules-explanation)
-8. [Data Logging Output (CSV Format)](#8-data-logging-output-csv-format)
-9. [Installation & Getting Started](#9-installation--getting-started)
-10. [Project Timeline](#10-project-timeline)
-11. [Timeline Summarize](#11-timeline-summarize)
-12. [Contributors](#12-contributors)
-13. [License & Ownership](#13-license--ownership)
-14. [Note](#14-note)
+6. [Design CAD](#6-design-CAD)
+7. [Complete Wiring Diagram](#7-complete-wiring-diagram)
+8. [Software Modules Explanation](#8-software-modules-explanation)
+9. [Data Logging Output (CSV Format)](#9-data-logging-output-csv-format)
+10. [Installation & Getting Started](#10-installation--getting-started)
+11. [Project Timeline](#11-project-timeline)
+12. [Timeline Summarize](#12-timeline-summarize)
+13. [Contributors](#13-contributors)
+14. [License & Ownership](#14-license--ownership)
+15. [Note](#15-note)
 
 ---
 
@@ -157,8 +158,34 @@ The MKS-MINI12864-V3 is a compact 128×64 pixel graphical LCD module driven by t
 The DS3231 is a highly accurate I2C real-time clock module with a built-in temperature-compensated crystal oscillator (TCXO), ensuring timekeeping accuracy of ±2 ppm across a wide temperature range. It is used in this project to timestamp each CSV log entry, supporting post-analysis and maintenance record-keeping.
 
 ---
+## 6. Design CAD
 
-## 6. Complete Wiring Diagram
+The mechanical enclosure of the Acoustic Emission (AE) Controller Kit was designed using 3D Computer-Aided Design (CAD) software to ensure durability, field-readiness, and ergonomic operation. The structural layout incorporates specific geometric features aimed at protecting internal components while facilitating user interaction and system maintenance.
+
+### User Interface and Control Accessibility
+* **LCD Display:** The enclosure features a flush-mounted rectangular cutout designed specifically for the LCD screen, allowing the display to align seamlessly with the exterior surface.
+* **Rotary Encoder:** A dedicated aperture is provided for the rotary encoder knob, enabling precise parameter adjustments and system navigation.
+* **Reset Button:** To facilitate system reboots, a precisely drilled hole allows direct access to the reset button.
+* **Component Protection:** Recessed rectangular slots are engineered for both the main switch and the AMC channel ports, providing a physical buffer that mitigates the risk of accidental actuation or impact damage to the connectors.
+* **Data Access:** An external rectangular port is integrated to permit SD card insertion and data retrieval without requiring the disassembly of the main housing.
+
+### Structural Integrity and Assembly
+* **Chassis Mounting:** To ensure structural rigidity, multiple mounting holes are distributed across the enclosure, utilizing heat-set threaded inserts to securely fasten the primary internal frame. Additional heat-set insert points are strategically positioned on both lateral sides to further reinforce the chassis assembly against operational vibrations.
+* **Portability:** For enhanced portability and operational safety, specific holes equipped with heat-set inserts serve as secure anchor points for an external hand strap.
+
+### Ergonomics and Power Management
+* **Kickstand Integration:** The posterior section of the enclosure incorporates extruded housings and slotted grooves specifically designed to accommodate a deployable kickstand. This integration allows the device to be elevated at an optimal viewing angle during stationary operation.
+* **Battery Retention:** The power management section features a dedicated rectangular cutout functioning as a battery locking mechanism. This is supplemented by elongated flat slots designed for routing cable ties or straps, ensuring the battery pack remains securely immobilized during field transit.
+
+
+<img width="1167" height="652" alt="image" src="https://github.com/user-attachments/assets/075bf4a0-3e37-43e5-a494-8ee066fecc6f" />
+
+<img width="1174" height="661" alt="image" src="https://github.com/user-attachments/assets/fdd2cb82-c408-4fdd-9b67-3f4cac2fde95" />
+
+
+
+---
+## 7. Complete Wiring Diagram
 
 ### AE Sensor Wiring
 
@@ -198,7 +225,7 @@ The LCD and SD card share the same SPI bus. The following pin mapping is used:
 
 ---
 
-## 7. Software Modules Explanation
+## 8. Software Modules Explanation
 
 This repository contains the following MicroPython source files. Each module has a single, well-defined responsibility following a modular firmware design pattern.
 
@@ -391,7 +418,7 @@ The module handles all exceptions internally and sets `rtc_ok = False` if initia
 
 ---
 
-## 8. Data Logging Output (CSV Format)
+## 9. Data Logging Output (CSV Format)
 
 When logging is enabled by the operator via the rotary encoder menu — indicated by `LOG: Y` on the LCD display — the system continuously writes AE measurement data from both sensors to the SD card in CSV format. The SD card is accessed via the shared SPI bus at `config.SD_BAUD` (50 kHz), with chip-select on `PIN_SD_CS` (GP17).
 
@@ -445,7 +472,7 @@ The DS3231 RTC provides timestamps at **one-second resolution**. Since the ADC s
 
 ---
 
-## 9. Installation & Getting Started
+## 10. Installation & Getting Started
 
 ### Prerequisites
 
@@ -515,17 +542,17 @@ VREF                = 3.3  # ADC reference voltage (Volts)
 
 ---
 
-## 10. Project Timeline
+## 11. Project Timeline
 <img width="1131" height="259" alt="image" src="https://github.com/user-attachments/assets/bc4d2781-e277-4181-8b11-aa3d337b0cd1" />
 
 ---
 
-## 11. timeline summarize
+## 12. timeline summarize
 The development of the Mechanical Seal Leak Detection system spans from late January to early May. The project we kicks off with sensor and microcontroller testing in late January. February and March serve as the core engineering phase, featuring parallel tracks for hardware design (progressing from CAD and wiring diagrams to multiple prototype iterations) and software development (covering requirements, signal coding, and interface design). Comprehensive system testing begins in late March alongside signal verification and continues throughout April. The timeline culminates in a dedicated period for final bug resolutions and project reporting in May.
 
 ---
 
-## 12.Contributors
+## 13.Contributors
 - Ratthawat Unakanporn : Validate Sensor and Wiring
   - Email: ratthawatu@gmail.com
   
@@ -541,13 +568,13 @@ The development of the Mechanical Seal Leak Detection system spans from late Jan
 ---
 
 Department of Mechanical Engineering, Faculty of Engineering, Chulalongkorn University</br>
-## 13. License & Ownership
+## 14. License & Ownership
 This repository contains proprietary source code. All code in this repository is the intellectual property of Rayong Engineering & Plant Service Co.,Ltd. and Chulalongkorn University
 
 Unauthorized use, reproduction, or distribution of this code is strictly prohibited.
 
 ---
 
-## 14. NOTE
+## 15. NOTE
 - MKS-MINI12864-V3: https://github.com/makerbase-mks/MKS-MINI12864-V3
 - MOTION 2350 PRO: https://github.com/CytronTechnologies/Cytron-MOTION-2350-PRO
