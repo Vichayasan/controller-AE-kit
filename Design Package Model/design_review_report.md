@@ -1,95 +1,95 @@
-# Design Review Report: Enclosure Concept Design
+# รายงานการรีวิวดีไซน์: Enclosure Concept Design
 
-## Overview
+## ภาพรวม
 
-This report documents the progress and updates for the 3D-printed enclosure project across two concept design iterations, including identified issues and modifications made to parts.
+รายงานนี้บันทึกความคืบหน้าและการอัปเดตของโปรเจกต์กล่อง 3D Print ทั้งสองรุ่น รวมถึงปัญหาที่พบและการแก้ไขชิ้นส่วนต่างๆ
 
 ---
 
-## Concept Design 1
+## Concept Design ที่ 1
 
-### Summary
-- Successfully 3D printed the enclosure box and confirmed that basic components fit as calculated.
-- Initial assembly with core components was completed.
+### สรุป
+- ปริ้นกล่องออกมาเรียบร้อย และยืนยันได้ว่าอุปกรณ์เบื้องต้นใส่ได้ตามที่คำนวณไว้
+- ประกอบอุปกรณ์หลักเบื้องต้นได้สำเร็จ
 
-### Issues & Early Fixes
-- Some parts required post-print cutting/modification to correct basic usability issues.
+### ปัญหาและการแก้ไขเบื้องต้น
+- บางชิ้นส่วนต้องมีการตัดเพิ่มเติมหลังปริ้น เพื่อแก้ไขการใช้งานเบื้องต้น
 
-### Parts Modified
+### ชิ้นส่วนที่มีการแก้ไข
 
 #### 1. Middle Base V1
-- **Hole Expansion** — Enlarged mounting/access holes to improve basic usability and component access.
+- **ขยายรู** — ขยายรูยึด/รูเข้าถึงให้ใหญ่ขึ้น เพื่อให้ใช้งานและเข้าถึงอุปกรณ์ได้ง่ายขึ้น
 
 #### 2. Base V1
-- **AE Sensor Clearance Fix** — Adjusted slot dimensions so the AE sensor fits correctly into the designated opening.
+- **แก้ระยะ AE Sensor** — ปรับขนาดช่องให้ AE Sensor พอดีกับช่องที่กำหนด
 
-#### 3. Middle Base V1 (Screw Access)
-- **Screw/Nut Accessibility** — Modified the design to make it easier to tighten and loosen screws, improving the assembly and disassembly process between the **chassis middle** and **lower base** layers.
+#### 3. Middle Base V1 (การไขน็อต)
+- **เข้าถึงน็อตได้ง่ายขึ้น** — ปรับดีไซน์เพื่อให้ไขและถอดน็อตได้สะดวกขึ้น ช่วยให้แยกชั้น **Chassis Middle** และ **Lower Base** ได้ง่ายขึ้น
 
-#### 4. Upper Section (Middle Piece)
-- **Top-side Nut Access Hole** — Added a hole on the top face to allow easier nut removal from the middle layer.
-- **Metal Plate Slot** — Added a slot for inserting a swappable metal plate, enabling future customization for connecting various **channels or switches**.
+#### 4. ชิ้นส่วนกลาง (ด้านบน)
+- **เพิ่มรูถอดน็อตด้านบน** — เจาะรูด้านบนเพื่อให้ถอดน็อตในชิ้นกลางออกได้ง่ายขึ้น
+- **เพิ่มช่อง Metal Plate** — เพิ่มช่องสำหรับเสียบ Metal Plate แบบถอดเปลี่ยนได้ เพื่อรองรับการต่อ Channel หรือ Switch ต่างๆ ในอนาคต
 
 ---
 
-## Concept Design 2
+## Concept Design ที่ 2
 
-### Summary
-Parts from Design 1 were revised with initial fixes applied, and new components were added to support future extensibility.
+### สรุป
+นำชิ้นส่วนจาก Design ที่ 1 มาปรับแก้และเพิ่มชิ้นส่วนใหม่ เพื่อรองรับการพัฒนาในอนาคต
 
-### Updated Parts
+### ชิ้นส่วนที่อัปเดต
 
-| Part | Version | Notes |
+| ชิ้นส่วน | เวอร์ชัน | หมายเหตุ |
 |---|---|---|
-| Base | v1.2 | Revised from Base v1 |
-| Metal Plate Swap | — | New swappable panel component |
-| Middle Base | V1.2 | Revised from Middle Base V1 |
-| RP 2350 with Brass Pole | — | Microcontroller mounting component |
-| Upper Base | v1.2 | Revised from Upper Base v1 |
+| Base | v1.2 | ปรับปรุงจาก Base v1 |
+| Metal Plate Swap | — | แผ่นสำหรับถอดเปลี่ยนได้ |
+| Middle Base | V1.2 | ปรับปรุงจาก Middle Base V1 |
+| RP 2350 with Brass Pole | — | ชิ้นส่วนยึด Microcontroller |
+| Upper Base | v1.2 | ปรับปรุงจาก Upper Base v1 |
 
-### Key Updates & Improvements
+### การปรับปรุงหลัก
 
-#### Metal Plate Swap System
-- Introduced a swappable **metal plate** concept to allow future panel changes.
-- Designed for adaptability: plates can be swapped to accommodate different **channel or switch configurations**.
-- Looking toward using **sheet metal printing** in future iterations for improved durability and performance over PLA plastic.
+#### ระบบ Metal Plate Swap
+- เพิ่มระบบ **Metal Plate แบบถอดเปลี่ยนได้** เพื่อรองรับการปรับเปลี่ยนในอนาคต
+- ออกแบบให้ยืดหยุ่น: สามารถเปลี่ยนแผ่นได้ตาม **Channel หรือ Switch** ที่ต้องการ
+- มองเห็นแนวทางในการพัฒนาเป็น **แผ่นโลหะจริง** เพื่อเพิ่มความทนทานและประสิทธิภาพมากกว่าพลาสติก PLA
 
-#### Power Supply Bay (Base v1.2)
-- Slightly adjusted the power supply compartment opening to make **cable tie routing easier**.
-- Corrected poor print quality issues encountered during the first 3D print run.
+#### ช่องใส่ Power Supply (Base v1.2)
+- ปรับช่องเล็กน้อยเพื่อให้ **ร้อย Cable Tie ได้ง่ายขึ้น**
+- แก้ไขปัญหาคุณภาพการปริ้นที่ไม่ดีจากรอบแรก
 
-#### Battery Status Display
-- Added a slot/opening on the upper face for a **battery status display**.
-- Battery level indication will depend on the power supply unit used.
+#### หน้าจอแสดงสถานะแบตเตอรี่
+- เพิ่มช่องสำหรับ **หน้าจอแสดงสถานะแบตเตอรี่** บนฝาด้านบน
+- การแสดงผลขึ้นอยู่กับ Power Supply ที่ใช้งาน
 
-#### SD Card Slot
-- Adjusted the SD card access opening for **easier insertion and removal** during development.
-- Designed to remain adaptable for future use-case changes.
+#### ช่อง SD Card
+- ปรับช่อง SD Card ให้ **ใส่และถอดได้ง่ายขึ้น** ระหว่างการพัฒนา
+- ออกแบบให้ปรับเปลี่ยนได้ตามความต้องการในอนาคต
 
-#### Middle Base V1.2 — Circuit Bay & Side Panels
-- Resized internal compartments to better accommodate circuit boards.
-- Added **swappable side panel slots** for mounting various switches.
-- Future development can adjust internal layout to match component requirements and achieve a more **compact form factor**.
-
----
-
-## Post-Print Results: Concept Design 2
-
-Three main printed parts were confirmed after the second print run:
-
-- **Upper Base v1.2** — Top panel with display window and SD card cutout
-- **Base v1.2** — Lower tray with compartment layout and brass pole inserts
-- **Middle Base V1.2** — Chassis frame with side-mount switch slots and circuit bay
+#### Middle Base V1.2 — ช่องวงจรและแผงด้านข้าง
+- ปรับขนาดช่องภายในให้รองรับแผงวงจรได้ดีขึ้น
+- เพิ่ม **ช่องด้านข้างแบบถอดเปลี่ยนได้** สำหรับติดตั้ง Switch ต่างๆ
+- สามารถปรับ Layout ในอนาคตให้ Compact และสอดคล้องกับอุปกรณ์ที่จะใส่ในกล่อง
 
 ---
 
-## Future Development Notes
+## ผลลัพธ์หลังปริ้น: Concept Design ที่ 2
 
-- Layout and slot positions can be further adjusted to match new components.
-- Metal plate swap system allows non-destructive panel changes for switches and channels.
-- Transitioning to **sheet metal fabrication** is planned for structural parts to improve rigidity and longevity.
-- All major interfaces (SD card, display, switches) are designed with modularity in mind for easy future iteration.
+ชิ้นส่วนหลักที่ปริ้นสำเร็จในรอบที่สอง:
+
+- **Upper Base v1.2** — ฝาด้านบนพร้อมช่องหน้าจอและช่อง SD Card
+- **Base v1.2** — ถาดล่างพร้อม Layout ช่องใส่อุปกรณ์และ Brass Pole
+- **Middle Base V1.2** — โครงกลางพร้อมช่อง Switch ด้านข้างและช่องวางวงจร
 
 ---
 
-*Report based on internal design review documentation — Concept Design 1 & 2.*
+## แนวทางการพัฒนาในอนาคต
+
+- สามารถปรับ Layout และตำแหน่งช่องต่างๆ ให้เหมาะกับอุปกรณ์ใหม่ได้
+- ระบบ Metal Plate Swap ช่วยให้เปลี่ยนแผง Switch และ Channel ได้โดยไม่ต้องออกแบบใหม่ทั้งหมด
+- วางแผนเปลี่ยนชิ้นส่วนโครงสร้างหลักเป็น **แผ่นโลหะ** เพื่อเพิ่มความแข็งแรงและอายุการใช้งาน
+- ช่องต่อประสาน (SD Card, หน้าจอ, Switch) ออกแบบมาให้รองรับการพัฒนาต่อในอนาคต
+
+---
+
+*รายงานนี้จัดทำจากเอกสารรีวิวดีไซน์ภายใน — Concept Design ที่ 1 และ 2*
